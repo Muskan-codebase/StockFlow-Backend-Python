@@ -58,19 +58,21 @@ Implemented using Python Flask + SQLAlchemy (ORM) and MySQL.
 ### response
 
 <pre>{
-  "alerts": [
-    {
-      "company_id": 1,
-      "company_name": "ABC Corp",
-      "warehouse_id": 2,
-      "warehouse_name": "Pune Warehouse",
-      "product_id": 10,
-      "product_name": "Soap",
-      "quantity": 5,
-      "low_stock_threshold": 20
-    }
-  ],
-  "total_alerts": 1
+  {
+    "alerts": [
+        {
+            "current_stock": 3,
+            "days_until_stockout": 1,
+            "product_id": 2,
+            "product_name": "Wireless Mouse",
+            "sku": "WM-101",
+            "supplier": null,
+            "threshold": 10,
+            "warehouse_id": 1,
+            "warehouse_name": "Pune Warehouse"
+        }
+    ],
+    "total_alerts": 1
 }
 </pre>
 
