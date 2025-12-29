@@ -57,7 +57,7 @@ Implemented using Python Flask + SQLAlchemy (ORM) and MySQL.
 
 ### response
 
-`{
+<pre>{
   "alerts": [
     {
       "company_id": 1,
@@ -72,6 +72,6 @@ Implemented using Python Flask + SQLAlchemy (ORM) and MySQL.
   ],
   "total_alerts": 1
 }
-`
+</pre>
 
 
