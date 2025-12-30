@@ -76,7 +76,7 @@ Implemented using Python Flask + SQLAlchemy (ORM) and MySQL.
 | name     | VARCHAR  | Warehouse name    |
 | location | VARCHAR  | Warehouse location |
 
-## Database Relationships
+### Database Relationships
 
 Current Implementation: Products → Inventory → Warehouses
 
