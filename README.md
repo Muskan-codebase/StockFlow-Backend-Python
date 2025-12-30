@@ -10,7 +10,87 @@ Implemented using Python Flask + SQLAlchemy (ORM) and MySQL.
 - SQLAlchemy
 - MySQL
 
-## Database Design
+---
+
+## Part 1: Debugging and fixing API
+
+- **Create Product API** (`POST /api/products`)  
+  - Adds a new product to the database.  
+  - Automatically creates an initial inventory entry for the product in a warehouse.
+ 
+### Original Issues
+
+1. **No Data Validation**
+   - Fields like `name`, `price`, and `initial_quantity` were not validated.
+   - **Impact:** Incorrect or null data could be saved, causing issues in production.
+
+2. **Warehouse Existence Not Verified**
+   - Warehouse ID was not checked before creating a product.
+   - **Impact:** Could lead to foreign key errors or products assigned to non-existent warehouses.
+
+3. **No Proper Data Referencing**
+   - Product had `warehouse_id` in its table, limiting it to a single warehouse.
+   - **Impact:** Cannot track products across multiple warehouses.
+
+4. **Missing Duplicate Entry Prevention**
+   - `sku` was not unique.
+   - **Impact:** Duplicate products could be created, leading to redundancy.
+
+5. **No Transaction Safety**
+   - Products and inventory were committed in separate transactions.
+   - **Impact:** Could save products without inventory, causing referential issues.
+
+### Fixes Implemented
+
+- Added **field validation** before inserting products.
+- Verified **warehouse existence** before creating product.
+- Created a **separate Inventory table** with foreign keys to Products and Warehouses.
+- Added **unique constraint on `sku`** to prevent duplicates.
+- Combined database commits into a **single transaction** to ensure data consistency.
+
+---
+
+## Database Schema
+
+**Tables and Relationships:**
+
+### 1. Products
+| Column           | Type          | Description                       |
+|-----------------|---------------|-----------------------------------|
+| id               | INT (PK)      | Unique product ID                  |
+| name             | VARCHAR       | Product name                       |
+| sku              | VARCHAR       | Unique SKU                         |
+| price            | DECIMAL       | Product price                      |
+| initial_quantity | INT           | Quantity used to create inventory  |
+
+### 2. Inventory
+| Column       | Type          | Description                         |
+|-------------|---------------|-------------------------------------|
+| id          | INT (PK)      | Unique inventory record ID          |
+| product_id  | INT (FK → Products.id) | Links inventory to a product |
+| warehouse_id| INT (FK → Warehouses.id) | Links inventory to a warehouse |
+| quantity    | INT           | Quantity of the product in warehouse |
+
+### 3. Warehouses
+| Column   | Type     | Description       |
+|---------|----------|------------------|
+| id       | INT (PK) | Unique warehouse ID |
+| name     | VARCHAR  | Warehouse name    |
+| location | VARCHAR  | Warehouse location |
+
+## Database Relationships
+
+Current Implementation: Products → Inventory → Warehouses
+
+**Explanation of Relationships:**
+
+- Each **Product** can have **inventory entries in multiple warehouses**.  
+- Each **Inventory** record links **one Product** to **one Warehouse**.  
+- Each **Warehouse** can store **many products** via inventory.  
+- This setup allows tracking **quantity of each product per warehouse**.
+
+
+## Part 2: Database Design
 
 ### Tables
 
@@ -43,7 +123,7 @@ Implemented using Python Flask + SQLAlchemy (ORM) and MySQL.
 8. **Product Bundles**
    - Links products that are bundles containing other products
   
-## Low Stock Alert API
+## Part 3: Low Stock Alert API
 
 ### Endpoint
 `GET /api/companies/<company_id>/low-stock-alerts`
