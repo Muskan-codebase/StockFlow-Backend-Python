@@ -48,9 +48,7 @@ Implemented using Python Flask + SQLAlchemy (ORM) and MySQL.
 - Added **unique constraint on `sku`** to prevent duplicates.
 - Combined database commits into a **single transaction** to ensure data consistency.
 
----
-
-## Database Schema
+### Database Schema
 
 **Tables and Relationships:**
 
@@ -89,6 +87,7 @@ Current Implementation: Products → Inventory → Warehouses
 - Each **Warehouse** can store **many products** via inventory.  
 - This setup allows tracking **quantity of each product per warehouse**.
 
+---
 
 ## Part 2: Database Design
 
@@ -122,6 +121,8 @@ Current Implementation: Products → Inventory → Warehouses
 
 8. **Product Bundles**
    - Links products that are bundles containing other products
+
+  ---
   
 ## Part 3: Low Stock Alert API
 
